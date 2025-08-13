@@ -1,22 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Card } from "../../components/Card/Card";
+import { useMoviesByUrl } from "../../hooks/useMovies";
 import "../../styles/filmfilter.scss";
-import axios from "axios";
 
-export const FilmFilter = ({ selectedGenre, favourites, setFavourites }) => {
-	const [movies, setMovies] = useState([]);
+export const FilmFilter = ({ selectedGenre }) => {
+	const { data: movies = [], isLoading, error } = useMoviesByUrl(selectedGenre, ['films', selectedGenre]);
 
-	useEffect(() => {
-		const getShowList = async () => {
-			try {
-				const request = await axios.get(selectedGenre);
-				setMovies(request.data.results);
-			} catch (error) {
-				console.log(error);
-			}
-		};
-		getShowList();
-	}, [selectedGenre]);
+	if (isLoading) return <div>Loading...</div>;
+	if (error) return <div>Error: {error.message}</div>;
 
 	return (
 		<div className="films">
@@ -27,10 +18,8 @@ export const FilmFilter = ({ selectedGenre, favourites, setFavourites }) => {
 						.map((movie, index) => (
 							<Card
 								className="films__card"
-								key={index}
+								key={movie.id}
 								movie={movie}
-								favourites={favourites}
-								setFavourites={setFavourites}
 							/>
 						))}
 				</div>

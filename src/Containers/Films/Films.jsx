@@ -3,12 +3,7 @@ import { FilmFilter } from "./FilmFilter";
 import { requests } from "../../config";
 import "../../styles/films.scss";
 
-export const Films = ({
-	searchInput,
-	setSearchInput,
-	favourites,
-	setFavourites,
-}) => {
+export const Films = () => {
 	const [selectedGenre, setSelectedGenre] = useState(requests.Popular.url);
 
 	const requestsArray = Object.values(requests);
@@ -19,6 +14,7 @@ export const Films = ({
 				{requestsArray.map((item) => {
 					return (
 						<button
+							key={item.title}
 							className={selectedGenre === item.url ? "active" : ""}
 							onClick={() => setSelectedGenre(item.url)}
 						>
@@ -30,8 +26,6 @@ export const Films = ({
 			<h3>{requests.title}</h3>
 			<FilmFilter
 				selectedGenre={selectedGenre}
-				favourites={favourites}
-				setFavourites={setFavourites}
 			/>
 		</>
 	);

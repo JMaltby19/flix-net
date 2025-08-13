@@ -1,38 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Card } from "../../components/Card/Card";
-import axios from "axios";
-import { requests } from "../../config";
+import { useTrendingMovies } from "../../hooks/useMovies";
 
-export const Trending = ({ favourites, setFavourites }) => {
-	const [movies, setMovies] = useState([]);
+export const Trending = () => {
+	const { data: trending = [], isLoading, error } = useTrendingMovies();
 
-	useEffect(() => {
-		const getShowList = async () => {
-			try {
-				const request = await axios.get(requests.Trending.url);
-				setMovies(request.data.results);
-			} catch (error) {
-				console.log(error);
-			}
-		};
-		getShowList();
-	}, []);
+	console.log(trending);
 
-	console.log(movies);
+	if (isLoading) return <div>Loading...</div>;
+	if (error) return <div>Error: {error.message}</div>;
 
 	return (
 		<>
 			<div className="films">
 				<div className="films__posters">
-					{movies
+					{trending
 						.filter((movie) => movie.backdrop_path != null)
-						.map((movie, index) => (
+						.map((movie) => (
 							<Card
 								className="films__card"
-								key={index}
+								key={movie.id}
 								movie={movie}
-								favourites={favourites}
-								setFavourites={setFavourites}
 							/>
 						))}
 				</div>

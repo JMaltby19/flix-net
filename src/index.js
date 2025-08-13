@@ -4,13 +4,30 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
+import { Provider } from "react-redux";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { store } from "./store";
+
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			retry: 2,
+			staleTime: 5 * 60 * 1000, // 5 minutes
+			refetchOnWindowFocus: false,
+		},
+	},
+});
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<React.StrictMode>
-		<Router>
-			<App />
-		</Router>
+		<QueryClientProvider client={queryClient}>
+			<Provider store={store}>
+				<Router>
+					<App />
+				</Router>
+			</Provider>
+		</QueryClientProvider>
 	</React.StrictMode>
 );
 

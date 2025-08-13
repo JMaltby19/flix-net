@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { IMG_URL } from "../../config";
 import "../../styles/card.scss";
 import { motion } from "framer-motion";
@@ -9,10 +10,12 @@ import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 import { useClickOutside } from "../../utils";
+import { addToFavourites, removeFromFavourites } from "../../store/slices/favouritesSlice";
 
-export const Card = ({ movie, largePoster, favourites, setFavourites }) => {
+export const Card = ({ movie, largePoster }) => {
 	const [selectedId, setSelectedId] = useState(false);
-	// const [openCard, setOpenCard] = useState(false);
+	const dispatch = useDispatch();
+	const favourites = useSelector((state) => state.favourites.items);
 
 	const cardClicked = () => {
 		setSelectedId(!selectedId);
@@ -30,9 +33,8 @@ export const Card = ({ movie, largePoster, favourites, setFavourites }) => {
 		) {
 			return;
 		}
-		const newFavouriteList = [...favourites, movie];
-		setFavourites(newFavouriteList);
-		saveToStorage(newFavouriteList);
+		dispatch(addToFavourites(movie));
+		saveToStorage([...favourites, movie]);
 	};
 
 	const saveToStorage = (items) => {
@@ -40,11 +42,10 @@ export const Card = ({ movie, largePoster, favourites, setFavourites }) => {
 	};
 
 	const removeFavouriteMovie = (movie) => {
+		dispatch(removeFromFavourites(movie.id));
 		const newFavouriteList = favourites.filter(
 			(favourite) => favourite.id !== movie.id
 		);
-
-		setFavourites(newFavouriteList);
 		saveToStorage(newFavouriteList);
 	};
 

@@ -1,10 +1,10 @@
 import React from "react";
 import { MyList } from "./MyList";
 
-export const FavouriteList = ({ favourites, setFavourites }) => {
+export const FavouriteList = () => {
 	return (
 		<div>
-			<MyList favourites={favourites} setFavourites={setFavourites} />
+			<MyList />
 		</div>
 	);
 };

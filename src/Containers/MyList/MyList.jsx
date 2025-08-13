@@ -1,16 +1,21 @@
 import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Card } from "../../components/Card/Card";
+import { setFavourites } from "../../store/slices/favouritesSlice";
 import "../../styles/mylist.scss";
 
-export const MyList = ({ favourites, setFavourites }) => {
+export const MyList = () => {
+	const dispatch = useDispatch();
+	const favourites = useSelector((state) => state.favourites.items);
+
 	useEffect(() => {
 		const movieFavourites = JSON.parse(
 			localStorage.getItem("Netflix-clone-favourites")
 		);
 		if (movieFavourites) {
-			setFavourites(movieFavourites);
+			dispatch(setFavourites(movieFavourites));
 		}
-	}, [setFavourites]);
+	}, [dispatch]);
 
 	console.log(favourites);
 	return (
@@ -24,8 +29,6 @@ export const MyList = ({ favourites, setFavourites }) => {
 								<Card
 									movie={movie}
 									key={movie.id}
-									favourites={favourites}
-									setFavourites={setFavourites}
 								/>
 							))}
 				</div>

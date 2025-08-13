@@ -3,7 +3,7 @@ export const BASE_URL = "https://api.themoviedb.org/3";
 export const API_KEY = process.env.REACT_APP_API_KEY;
 export const IMG_URL = "https://image.tmdb.org/t/p/original/";
 // export const API_URL = "http://localhost:6001";
-export const API_URL = "https://api.my-netflix-clone.co.uk";
+export const API_URL = "https://api.flix-project.co.uk";
 
 export const requests = {
 	Netflix: {

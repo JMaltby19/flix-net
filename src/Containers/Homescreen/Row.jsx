@@ -1,30 +1,19 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
 import { Card } from "../../components/Card/Card";
+import { useMoviesByUrl } from "../../hooks/useMovies";
 import "../../styles/row.scss";
 
 export const Row = ({
 	title,
 	fetchUrl,
 	isLargeRow = false,
-	favourites,
-	setFavourites,
 }) => {
-	const [movies, setMovies] = useState([]);
-
-	useEffect(() => {
-		const getShowList = async () => {
-			try {
-				const request = await axios.get(fetchUrl);
-				setMovies(request.data.results);
-			} catch (error) {
-				console.log(error);
-			}
-		};
-		getShowList();
-	}, [fetchUrl, setMovies]);
+	const { data: movies = [], isLoading, error } = useMoviesByUrl(fetchUrl, [title]);
 
 	console.log(movies);
+
+	if (isLoading) return <div>Loading {title}...</div>;
+	if (error) return <div>Error loading {title}</div>;
 
 	return (
 		<div className={`row ${isLargeRow && "rowLarge"}`}>
@@ -46,8 +35,6 @@ export const Row = ({
 										key={movie.id}
 										movie={movie}
 										largePoster={isLargeRow}
-										favourites={favourites}
-										setFavourites={setFavourites}
 									/>
 								)
 						)}

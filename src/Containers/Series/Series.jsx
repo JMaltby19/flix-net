@@ -3,7 +3,7 @@ import { SeriesFilter } from "./SeriesFilter";
 import { seriesRequests } from "../../config";
 import "../../styles/films.scss";
 
-export const Series = ({ favourites, setFavourites }) => {
+export const Series = () => {
 	const [selectedGenre, setSelectedGenre] = useState(
 		seriesRequests.TvPopular.url
 	);
@@ -16,6 +16,7 @@ export const Series = ({ favourites, setFavourites }) => {
 				{requestsArray.map((item) => {
 					return (
 						<button
+							key={item.title}
 							className={selectedGenre === item.url ? "active" : ""}
 							onClick={() => setSelectedGenre(item.url)}
 						>
@@ -27,8 +28,6 @@ export const Series = ({ favourites, setFavourites }) => {
 			<h3>{seriesRequests.title}</h3>
 			<SeriesFilter
 				selectedGenre={selectedGenre}
-				favourites={favourites}
-				setFavourites={setFavourites}
 			/>
 		</div>
 	);
